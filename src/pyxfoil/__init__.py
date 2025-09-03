@@ -38,6 +38,11 @@ def set_workdir(wdir):
     workdir = wdir
 
 
+def set_logfile(logfile=None):
+    global xfoillog
+    xfoillog = logfile
+set_logfile()
+
 set_workdir(curdir)
 
 

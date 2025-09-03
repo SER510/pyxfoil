@@ -174,7 +174,7 @@ def write_polar_session(name: str, datfilepath: str, numpnl: int,
                         ppar: int | None = None,
                         xtrtop: float = 1.0,
                         xtrbot: float = 1.0, 
-                        niter: int = 40) -> tuple[str, str]:
+                        niter: int = 20) -> tuple[str, str]:
 
     from . import workdir
 

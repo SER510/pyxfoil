@@ -183,7 +183,8 @@ class XfoilResult:
 def write_result_session(name: str, datfilepath: str, numpnl: int,
                          alpha: float, mach: float | None = None,
                          Re: float | None = None,
-                         ppar: int | None = None) -> tuple[str, str]:
+                         ppar: int | None = None, 
+                         niter: int = 20) -> tuple[str, str]:
 
     from . import workdir
 
@@ -201,17 +202,23 @@ def write_result_session(name: str, datfilepath: str, numpnl: int,
         file.write('PLOP\n')
         file.write('G F\n')
         file.write('\n')
+
         file.write('load {:s}\n'.format(datfilepath))
+
         if ppar is not None:
             file.write('ppar\n')
             file.write('n {:d}\n'.format(ppar))
             file.write('\n')
             file.write('\n')
+
         file.write('oper\n')
+
         if mach is not None:
             file.write('mach {:g}\n'.format(mach))
         if Re is not None:
             file.write('visc {:.12g}\n'.format(Re))
+        if not niter==20:
+            file.write(f'ITER {niter}\n')
         file.write('alfa {:g}\n'.format(alpha))
         file.write('dump {:s}\n'.format(resfilepath))
         if mach is not None:

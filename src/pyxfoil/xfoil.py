@@ -98,7 +98,8 @@ class Xfoil:
         numpnl = len(self.x) - 1
         sesfilepath, resfilepath = write_result_session(self.name, datfilepath, numpnl,
                                                         alfa, mach=mach, Re=Re,
-                                                        ppar=self.ppar)
+                                                        ppar=self.ppar,
+                                                        niter=self.niter)
 
         if isfile(resfilepath):
             remove(resfilepath)
@@ -108,7 +109,12 @@ class Xfoil:
             err += 'Import set_xfoilexe and use it to directly point to "xfoil.exe".'
             raise SystemError(err)
 
-        system('{:s} < {:s}'.format(xfoilexe, sesfilepath))
+        from . import xfoillog
+        if xfoillog is not None:
+            system(f'{xfoilexe:s} < {sesfilepath:s} > {xfoillog}')
+        else:
+            system('{:s} < {:s}'.format(xfoilexe, sesfilepath))
+
 
         res = split(resfilepath)[1]
         res = res.replace('.res', '')
@@ -142,7 +148,11 @@ class Xfoil:
             err += 'Import set_xfoilexe and use it to directly point to "xfoil.exe".'
             raise SystemError(err)
 
-        system('{:s} < {:s}'.format(xfoilexe, sesfilepath))
+        from . import xfoillog
+        if xfoillog is not None:
+            system(f'{xfoilexe:s} < {sesfilepath:s} > {xfoillog}')
+        else:
+            system('{:s} < {:s}'.format(xfoilexe, sesfilepath))
 
         pol: str = split(polfilepath)[1]
         pol = pol.replace('.pol', '')
