@@ -173,7 +173,8 @@ def write_polar_session(name: str, datfilepath: str, numpnl: int,
                         Re: float | None = None,
                         ppar: int | None = None,
                         xtrtop: float = 1.0,
-                        xtrbot: float = 1.0) -> tuple[str, str]:
+                        xtrbot: float = 1.0, 
+                        niter: int = 40) -> tuple[str, str]:
 
     from . import workdir
 
@@ -190,6 +191,10 @@ def write_polar_session(name: str, datfilepath: str, numpnl: int,
     polfilepath = f'{filepath:s}.pol'
 
     with open(sesfilepath, 'wt') as file:
+        # Disable graphs. In Arch they are crashing xfoil
+        file.write('PLOP\n')
+        file.write('G F\n')
+        file.write('\n')
 
         file.write('load {:s}\n'.format(datfilepath))
 
@@ -207,6 +212,9 @@ def write_polar_session(name: str, datfilepath: str, numpnl: int,
         if Re is not None:
             file.write('visc {:.12g}\n'.format(Re))
 
+        if not niter==20:
+            file.write(f'ITER {niter}\n')
+
         # Set TRIP Position:
         file.write('VPAR\n')
         file.write('XTR\n')
@@ -214,6 +222,8 @@ def write_polar_session(name: str, datfilepath: str, numpnl: int,
         file.write(f'{xtrbot:g}\n')
         file.write('\n')
 
+        file.write(f'name {name}\n')
+        
         file.write('pacc\n')
         file.write('{:s}\n'.format(polfilepath))
         file.write('\n')

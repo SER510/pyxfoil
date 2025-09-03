@@ -197,6 +197,10 @@ def write_result_session(name: str, datfilepath: str, numpnl: int,
     sesfilepath = f'{filepath:s}.ses'
     resfilepath = f'{filepath:s}.res'
     with open(sesfilepath, 'wt') as file:
+        # To disable XFoil graphs. They crash in Arch
+        file.write('PLOP\n')
+        file.write('G F\n')
+        file.write('\n')
         file.write('load {:s}\n'.format(datfilepath))
         if ppar is not None:
             file.write('ppar\n')

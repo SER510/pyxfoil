@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 class Xfoil:
     name: str = None
     ppar: int = None
+    niter: int = 20
     x: 'NDArray' = None
     y: 'NDArray' = None
     results: dict[str, 'XfoilResult'] = None
@@ -53,6 +54,9 @@ class Xfoil:
 
     def set_ppar(self, ppar: int) -> None:
         self.ppar = ppar
+
+    def set_niter(self, niter: int) -> None:
+        self.niter = niter
 
     @property
     def area(self) -> float:
@@ -127,7 +131,8 @@ class Xfoil:
         sesfilepath, polfilepath = write_polar_session(self.name, datfilepath,
                                                        numpnl, almin, almax, alint,
                                                        mach=mach, Re=Re, ppar=self.ppar,
-                                                       xtrtop=xtrtop, xtrbot=xtrbot)
+                                                       xtrtop=xtrtop, xtrbot=xtrbot,
+                                                       niter=self.niter)
 
         if isfile(polfilepath):
             remove(polfilepath)
